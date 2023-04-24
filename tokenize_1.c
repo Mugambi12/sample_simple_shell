@@ -2,50 +2,58 @@
 
 /**
  * _strcat - concatenates two strings
- * @dest: the destination buffer
- * @src: the source buffer
+ * @dest: pointer to the destination buffer
+ * @src: pointer to the source buffer
  *
- * Return: pointer to destination buffer
+ * Return: pointer to the destination buffer
  */
 char *_strcat(char *dest, char *src)
 {
 	char *ret = dest;
 
 	while (*dest)
+	{
 		dest++;
+	}
 	while (*src)
+	{
 		*dest++ = *src++;
+	}
 	*dest = *src;
+
 	return (ret);
 }
 
 /**
- * _strcpy - copies a string
- * @dest: the destination
- * @src: the source
+ * _strcpy - Copies a string.
+ * @dest: Pointer to the destination buffer.
+ * @src: Pointer to the source buffer.
  *
- * Return: pointer to destination
+ * Return: Pointer to destination buffer.
  */
 char *_strcpy(char *dest, char *src)
 {
 	int i = 0;
 
 	if (dest == src || src == 0)
+	{
 		return (dest);
+	}
 	while (src[i])
 	{
 		dest[i] = src[i];
 		i++;
 	}
 	dest[i] = 0;
+
 	return (dest);
 }
 
 /**
- * _strdup - duplicates a string
- * @str: the string to duplicate
+ * _strdup - duplicates a string.
+ * @str: the string to duplicate.
  *
- * Return: pointer to the duplicated string
+ * Return: pointer to the duplicated string.
  */
 char *_strdup(const char *str)
 {
@@ -54,21 +62,25 @@ char *_strdup(const char *str)
 
 	if (str == NULL)
 		return (NULL);
+
 	while (*str++)
 		length++;
+
 	ret = malloc(sizeof(char) * (length + 1));
 	if (!ret)
 		return (NULL);
+
 	for (length++; length--;)
 		ret[length] = *--str;
+
 	return (ret);
 }
 
 /**
- *_puts - prints an input string
- *@str: the string to be printed
+ *_puts - prints an input string.
+ *@str: the string to be printed.
  *
- * Return: Nothing
+ * Return: void.
  */
 void _puts(char *str)
 {
@@ -76,6 +88,7 @@ void _puts(char *str)
 
 	if (!str)
 		return;
+
 	while (str[i] != '\0')
 	{
 		_putchar(str[i]);
@@ -84,23 +97,24 @@ void _puts(char *str)
 }
 
 /**
- * _putchar - writes the character c to stdout
- * @c: The character to print
+ * _putchar - writes the character `c` to stdout
+ * @character: The character to print
  *
- * Return: On success 1.
- * On error, -1 is returned, and errno is set appropriately.
+ * Return: On success, returns 1.
+ *				On error, returns -1 and sets errno appropriately.
  */
-int _putchar(char c)
+int _putchar(char character)
 {
 	static int i;
 	static char buf[WRITE_BUF_SIZE];
 
-	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+	if (character == BUF_FLUSH || i >= WRITE_BUF_SIZE)
 	{
 		write(1, buf, i);
 		i = 0;
 	}
-	if (c != BUF_FLUSH)
-		buf[i++] = c;
+	if (character != BUF_FLUSH)
+		buf[i++] = character;
+
 	return (1);
 }

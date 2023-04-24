@@ -1,144 +1,165 @@
 #include "shell.h"
 
 /**
- * **strtow - splits a string into words. Repeat delimiters are ignored
- * @str: the input string
- * @d: the delimeter string
- * Return: a pointer to an array of strings, or NULL on failure
- */
-
-char **strtow(char *str, char *d)
-{
-	int i, j, k, m, numwords = 0;
-	char **s;
-
-	if (str == NULL || str[0] == 0)
-		return (NULL);
-	if (!d)
-		d = " ";
-	for (i = 0; str[i] != '\0'; i++)
-		if (!is_delim(str[i], d) && (is_delim(str[i + 1], d) || !str[i + 1]))
-			numwords++;
-
-	if (numwords == 0)
-		return (NULL);
-	s = malloc((1 + numwords) * sizeof(char *));
-	if (!s)
-		return (NULL);
-	for (i = 0, j = 0; j < numwords; j++)
-	{
-		while (is_delim(str[i], d))
-			i++;
-		k = 0;
-		while (!is_delim(str[i + k], d) && str[i + k])
-			k++;
-		s[j] = malloc((k + 1) * sizeof(char));
-		if (!s[j])
-		{
-			for (k = 0; k < j; k++)
-				free(s[k]);
-			free(s);
-			return (NULL);
-		}
-		for (m = 0; m < k; m++)
-			s[j][m] = str[i++];
-		s[j][m] = 0;
-	}
-	s[j] = NULL;
-	return (s);
-}
-
-/**
- * **strtow2 - splits a string into words
- * @str: the input string
- * @d: the delimeter
- * Return: a pointer to an array of strings, or NULL on failure
- */
-char **strtow2(char *str, char d)
-{
-	int i, j, k, m, numwords = 0;
-	char **s;
-
-	if (str == NULL || str[0] == 0)
-		return (NULL);
-	for (i = 0; str[i] != '\0'; i++)
-		if ((str[i] != d && str[i + 1] == d) ||
-		    (str[i] != d && !str[i + 1]) || str[i + 1] == d)
-			numwords++;
-	if (numwords == 0)
-		return (NULL);
-	s = malloc((1 + numwords) * sizeof(char *));
-	if (!s)
-		return (NULL);
-	for (i = 0, j = 0; j < numwords; j++)
-	{
-		while (str[i] == d && str[i] != d)
-			i++;
-		k = 0;
-		while (str[i + k] != d && str[i + k] && str[i + k] != d)
-			k++;
-		s[j] = malloc((k + 1) * sizeof(char));
-		if (!s[j])
-		{
-			for (k = 0; k < j; k++)
-				free(s[k]);
-			free(s);
-			return (NULL);
-		}
-		for (m = 0; m < k; m++)
-			s[j][m] = str[i++];
-		s[j][m] = 0;
-	}
-	s[j] = NULL;
-	return (s);
-}
-
-/**
- * _strlen - returns the length of a string
- * @s: the string whose length to check
+ * strtow - splits a string into words, ignoring repeat delimiters.
+ * @str: the input string.
+ * @delims: the delimiter string.
  *
- * Return: integer length of string
+ * Return: a pointer to an array of strings, or NULL on failure.
  */
-int _strlen(char *s)
+char **strtow(char *str, char *delims)
+{
+	int i, j, k, m, numwords = 0;
+	char **words;
+
+	if (str == NULL || str[0] == '\0')
+		return (NULL);
+
+	if (!delims)
+		delims = " ";
+
+	for (i = 0; str[i] != '\0'; i++)
+		if (!is_delim(str[i], delims) && (is_delim(str[i + 1], delims) || !str[i + 1]))
+			numwords++;
+
+	if (numwords == 0)
+		return (NULL);
+
+	words = malloc((1 + numwords) * sizeof(char *));
+	if (!words)
+		return (NULL);
+
+	for (i = 0, j = 0; j < numwords; j++)
+	{
+		while (is_delim(str[i], delims))
+			i++;
+
+		k = 0;
+		while (!is_delim(str[i + k], delims) && str[i + k])
+			k++;
+
+		words[j] = malloc((k + 1) * sizeof(char));
+		if (!words[j])
+		{
+			for (k = 0; k < j; k++)
+				free(words[k]);
+			free(words);
+			return (NULL);
+		}
+
+		for (m = 0; m < k; m++)
+			words[j][m] = str[i++];
+		words[j][m] = 0;
+	}
+
+	words[j] = NULL;
+	return (words);
+}
+
+/**
+ * strtow2 - splits a string into words
+ * @str: the input string
+ * @delim: the delimiter
+ *
+ * Return: a pointer to an array of strings, or NULL on failure
+ */
+char **strtow2(char *str, char delim)
+{
+	int i, j, k, m, numwords = 0;
+	char **words;
+
+	if (str == NULL || str[0] == '\0')
+		return (NULL);
+
+	for (i = 0; str[i] != '\0'; i++)
+		if ((str[i] != delim && str[i + 1] == delim) ||
+		    (str[i] != delim && !str[i + 1]) || str[i + 1] == delim)
+			numwords++;
+
+	if (numwords == 0)
+		return (NULL);
+
+	words = malloc((1 + numwords) * sizeof(char *));
+	if (!words)
+		return (NULL);
+
+	for (i = 0, j = 0; j < numwords; j++)
+	{
+		while (str[i] == delim && str[i] != '\0')
+			i++;
+
+		k = 0;
+		while (str[i + k] != delim && str[i + k] != '\0')
+			k++;
+
+		words[j] = malloc((k + 1) * sizeof(char));
+		if (!words[j])
+		{
+			for (k = 0; k < j; k++)
+				free(words[k]);
+			free(words);
+			return (NULL);
+		}
+
+		for (m = 0; m < k; m++)
+			words[j][m] = str[i++];
+
+		words[j][m] = '\0';
+	}
+
+	words[j] = NULL;
+	return (words);
+}
+
+/**
+ * _strlen - returns the length of a string.
+ * @string: the string whose length to check.
+ *
+ * Return: integer length of string.
+ */
+int _strlen(char *string)
 {
 	int i = 0;
 
-	if (!s)
+	if (!string)
 		return (0);
 
-	while (*s++)
+	while (*string++)
 		i++;
 	return (i);
 }
 
 /**
- * _strcmp - performs lexicogarphic comparison of two strangs.
- * @s1: the first strang
- * @s2: the second strang
+ * _strcmp - performs lexicographic comparison of two strings.
+ * @string1: the first string.
+ * @string2: the second string.
  *
- * Return: negative if s1 < s2, positive if s1 > s2, zero if s1 == s2
+ * Return: negative if string1 < string2, positive if string1 > string2,
+ *			and zero if string1 == string2.
  */
-int _strcmp(char *s1, char *s2)
+int _strcmp(char *string1, char *string2)
 {
-	while (*s1 && *s2)
+	while (*string1 && *string2)
 	{
-		if (*s1 != *s2)
-			return (*s1 - *s2);
-		s1++;
-		s2++;
+		if (*string1 != *string2)
+			return (*string1 - *string2);
+
+		string1++;
+		string2++;
 	}
-	if (*s1 == *s2)
+
+	if (*string1 == *string2)
 		return (0);
 	else
-		return (*s1 < *s2 ? -1 : 1);
+		return (*string1 < *string2 ? -1 : 1);
 }
 
 /**
- * starts_with - checks if needle starts with haystack
- * @haystack: string to search
- * @needle: the substring to find
+ * starts_with - checks if needle starts with haystack.
+ * @haystack: string to search.
+ * @needle: the substring to find.
  *
- * Return: address of next char of haystack or NULL
+ * Return: address of next char of haystack or NULL.
  */
 char *starts_with(const char *haystack, const char *needle)
 {

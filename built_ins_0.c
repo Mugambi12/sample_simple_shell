@@ -1,34 +1,6 @@
 #include "shell.h"
 
 /**
- * _myexit - handles the exit builtin command
- * @info: pointer to info struct
- *
- * Return: -2 on success, 1 on error
- */
-int _myexit(info_t *info)
-{
-	int exitcheck;
-
-	if (info->argv[1])
-	{
-		exitcheck = _erratoi(info->argv[1]);
-		if (exitcheck == -1)
-		{
-			info->status = 2;
-			print_error(info, "Illegal number: ");
-			_eputs(info->argv[1]);
-			_eputchar('\n');
-			return (1);
-		}
-		info->err_num = _erratoi(info->argv[1]);
-		return (-2);
-	}
-	info->err_num = -1;
-	return (-2);
-}
-
-/**
  * _mycd - changes the current directory
  * @info: a pointer to the info_t structure
  *
@@ -79,6 +51,18 @@ int _mycd(info_t *info)
 }
 
 /**
+ * _myhistory - prints the history of commands
+ * @info: pointer to struct containing command information
+ *
+ *  Return: always returns 0
+ */
+int _myhistory(info_t *info)
+{
+	print_list(info->history);
+	return (0);
+}
+
+/**
  * _myhelp - prints a message indicating the function is not yet implemented
  * @info:  pointer to struct containing command information
  *
@@ -92,18 +76,6 @@ int _myhelp(info_t *info)
 	_puts("help call works. Function not yet implemented \n");
 	if (0)
 		_puts(*arg_array);
-	return (0);
-}
-
-/**
- * _myhistory - prints the history of commands
- * @info: pointer to struct containing command information
- *
- *  Return: always returns 0
- */
-int _myhistory(info_t *info)
-{
-	print_list(info->history);
 	return (0);
 }
 
@@ -128,4 +100,32 @@ int unset_alias(info_t *info, char *str)
 		get_node_index(info->alias, node_starts_with(info->alias, str, -1)));
 	*p = c;
 	return (ret);
+}
+
+/**
+ * _myexit - handles the exit builtin command
+ * @info: pointer to info struct
+ *
+ * Return: -2 on success, 1 on error
+ */
+int _myexit(info_t *info)
+{
+	int exitcheck;
+
+	if (info->argv[1])
+	{
+		exitcheck = _erratoi(info->argv[1]);
+		if (exitcheck == -1)
+		{
+			info->status = 2;
+			print_error(info, "Illegal number: ");
+			_eputs(info->argv[1]);
+			_eputchar('\n');
+			return (1);
+		}
+		info->err_num = _erratoi(info->argv[1]);
+		return (-2);
+	}
+	info->err_num = -1;
+	return (-2);
 }

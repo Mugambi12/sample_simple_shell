@@ -1,10 +1,10 @@
 #include "shell.h"
 
 /**
- * get_environ - returns the string array copy of our environ
- * @info: Structure containing potential arguments. Used to maintain
- *          constant function prototype.
- * Return: Always 0
+ * get_environ - returns a copy of the environment variables as a string array.
+ * @info: structure containing environment variables and flags.
+ *
+ * Return: a string array of environment variables
  */
 char **get_environ(info_t *info)
 {
@@ -18,11 +18,11 @@ char **get_environ(info_t *info)
 }
 
 /**
- * _unsetenv - Remove an environment variable
- * @info: Structure containing potential arguments. Used to maintain
- *        constant function prototype.
- *  Return: 1 on delete, 0 otherwise
- * @var: the string env var property
+ * _unsetenv - Remove an environment variable.
+ * @info: structure containing potential arguments and environment variables.
+ * @var: the name of the environment variable to be removed.
+ *
+ * Return: 1 on successful removal, 0 otherwise.
  */
 int _unsetenv(info_t *info, char *var)
 {
@@ -46,16 +46,16 @@ int _unsetenv(info_t *info, char *var)
 		node = node->next;
 		i++;
 	}
+
 	return (info->env_changed);
 }
 
 /**
- * _setenv - Initialize a new environment variable,
- *             or modify an existing one
- * @info: Structure containing potential arguments. Used to maintain
- *        constant function prototype.
- * @var: the string env var property
- * @value: the string env var value
+ * _setenv - Set or modify an environment variable.
+ * @info: Structure containing arguments. Used to maintain function prototype.
+ * @var: Name of the environment variable to set or modify.
+ * @value: Value to set for the environment variable.
+ *
  *  Return: Always 0
  */
 int _setenv(info_t *info, char *var, char *value)
@@ -89,12 +89,13 @@ int _setenv(info_t *info, char *var, char *value)
 	add_node_end(&(info->env), buf, 0);
 	free(buf);
 	info->env_changed = 1;
+
 	return (0);
 }
 
 /**
- * clear_info - initializes info_t struct
- * @info: struct address
+ * clear_info - Initializes the fields of an info_t struct.
+ * @info: A pointer to an info_t struct.
  */
 void clear_info(info_t *info)
 {
@@ -105,9 +106,9 @@ void clear_info(info_t *info)
 }
 
 /**
- * set_info - initializes info_t struct
- * @info: struct address
- * @av: argument vector
+ * set_info - initialize the info_t struct.
+ * @info: pointer to the struct to be initialized.
+ * @av: argument vector that contains the arguments passed to the shell.
  */
 void set_info(info_t *info, char **av)
 {
@@ -119,7 +120,6 @@ void set_info(info_t *info, char **av)
 		info->argv = strtow(info->arg, " \t");
 		if (!info->argv)
 		{
-
 			info->argv = malloc(sizeof(char *) * 2);
 			if (info->argv)
 			{

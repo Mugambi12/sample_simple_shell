@@ -1,45 +1,52 @@
 #include "shell.h"
 
 /**
- * is_delim - checks if character is a delimeter
- * @c: the char to check
- * @delim: the delimeter string
- * Return: 1 if true, 0 if false
+ * is_delim - Check if a character is a delimiter.
+ * @c: The character to check.
+ * @delim: The delimiter string.
+ *
+ * Return: 1 if true, 0 if false.
  */
 int is_delim(char c, char *delim)
 {
 	while (*delim)
+	{
 		if (*delim++ == c)
 			return (1);
+	}
 	return (0);
 }
 
 /**
- *_isalpha - checks for alphabetic character
- *@c: The character to input
- *Return: 1 if c is alphabetic, 0 otherwise
+ * _isalpha - Check if a character is alphabetic.
+ * @c: The character to check.
+ *
+ * Return: 1 if c is alphabetic, 0 otherwise.
  */
-
 int _isalpha(int c)
 {
 	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+	{
 		return (1);
+	}
 	else
+	{
 		return (0);
+	}
 }
 
 /**
- *_atoi - converts a string to an integer
- *@s: the string to be converted
- *Return: 0 if no numbers in string, converted number otherwise
+ * _atoi - Convert a string to an integer.
+ * @s: The string to be converted.
+ *
+ * Return: The converted number, or 0 if no numbers in string.
  */
-
 int _atoi(char *s)
 {
 	int i, sign = 1, flag = 0, output;
 	unsigned int result = 0;
 
-	for (i = 0;  s[i] != '\0' && flag != 2; i++)
+	for (i = 0; s[i] != '\0' && flag != 2; i++)
 	{
 		if (s[i] == '-')
 			sign *= -1;
@@ -63,11 +70,11 @@ int _atoi(char *s)
 }
 
 /**
- * is_cmd - determines if a file is an executable command
- * @info: the info struct
- * @path: path to the file
+ * is_cmd - Determines if a file is an executable command.
+ * @info: The info struct.
+ * @path: Path to the file.
  *
- * Return: 1 if true, 0 otherwise
+ * Return: 1 if true, 0 otherwise.
  */
 int is_cmd(info_t *info, char *path)
 {
@@ -85,12 +92,12 @@ int is_cmd(info_t *info, char *path)
 }
 
 /**
- * dup_chars - duplicates characters
- * @pathstr: the PATH string
- * @start: starting index
- * @stop: stopping index
+ * dup_chars - Duplicates characters.
+ * @pathstr: The PATH string.
+ * @start: Starting index.
+ * @stop: Stopping index.
  *
- * Return: pointer to new buffer
+ * Return: Pointer to new buffer.
  */
 char *dup_chars(char *pathstr, int start, int stop)
 {
