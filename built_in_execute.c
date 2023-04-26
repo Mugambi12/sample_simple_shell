@@ -23,7 +23,7 @@ int _mycd(info_t *info)
 		else
 			chdir_ret = chdir(dir);
 	}
-	else if (_strcmp(info->argv[1], "-") == 0)
+	else if (string_strcmp(info->argv[1], "-") == 0)
 	{
 		if (!_getenv(info, "OLDPWD="))
 		{
@@ -40,7 +40,7 @@ int _mycd(info_t *info)
 	if (chdir_ret == -1)
 	{
 		print_error(info, "can't cd to ");
-		_eputs(info->argv[1]), _eputchar('\n');
+		error_puts(info->argv[1]), error_putchar('\n');
 	}
 	else
 	{
@@ -63,47 +63,7 @@ int _myhistory(info_t *info)
 }
 
 /**
- * _myhelp - prints a message indicating the function is not yet implemented
- * @info:  pointer to struct containing command information
- *
- *  Return: always returns 0
- */
-int _myhelp(info_t *info)
-{
-	char **arg_array;
-
-	arg_array = info->argv;
-	_puts("help call works. Function not yet implemented \n");
-	if (0)
-		_puts(*arg_array);
-	return (0);
-}
-
-/**
- * unset_alias - removes an alias from the linked list of aliases
- * @info: pointer to struct containing command information
- * @str: the alias to be removed
- *
- * Return: Always return 1 on failure to remove, 0 on success
- */
-int unset_alias(info_t *info, char *str)
-{
-	char *p, c;
-	int ret;
-
-	p = _strchr(str, '=');
-	if (!p)
-		return (1);
-	c = *p;
-	*p = 0;
-	ret = delete_node_at_index(&(info->alias),
-		get_node_index(info->alias, node_starts_with(info->alias, str, -1)));
-	*p = c;
-	return (ret);
-}
-
-/**
- * _myexit - handles the exit builtin command
+ * _myexit - handles the exit built_in command
  * @info: pointer to info struct
  *
  * Return: -2 on success, 1 on error
@@ -117,10 +77,10 @@ int _myexit(info_t *info)
 		exitcheck = _erratoi(info->argv[1]);
 		if (exitcheck == -1)
 		{
-			info->status = 2;
+			info->cmd_status = 2;
 			print_error(info, "Illegal number: ");
-			_eputs(info->argv[1]);
-			_eputchar('\n');
+			error_puts(info->argv[1]);
+			error_putchar('\n');
 			return (1);
 		}
 		info->err_num = _erratoi(info->argv[1]);
@@ -128,4 +88,39 @@ int _myexit(info_t *info)
 	}
 	info->err_num = -1;
 	return (-2);
+}
+
+/**
+ * exit_strncat - Concatenates two strings up to a certain number of bytes.
+ * @dest: The destination string.
+ * @src: The source string.
+ * @n: The maximum number of bytes to be concatenated.
+ *
+ * Return: The concatenated string.
+ */
+char *exit_strncat(char *dest, char *src, int n)
+{
+	int i, j;
+	char *s = dest;
+
+	i = 0;
+	while (dest[i] != '\0')
+	{
+		i++;
+	}
+
+	j = 0;
+	while (src[j] != '\0' && j < n)
+	{
+		dest[i] = src[j];
+		i++;
+		j++;
+	}
+
+	if (j < n)
+	{
+		dest[i] = '\0';
+	}
+
+	return (s);
 }

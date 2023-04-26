@@ -1,3 +1,16 @@
+/**
+ * Introduction
+ *		Set up initial variables and data structures.
+ *		Parse command line arguments and open script file if provided.
+ *		Populate environment variables list.
+ *		Read history file, if it exists.
+ *		Enter main shell loop (run_command function), which will run until an
+ *				error or the exit command is entered.
+ *		Cleanup and free memory, including writing history to file if
+ *				it was modified during the session.
+ *		Exit program with success or failure cmd_status code.
+*/
+
 #include "shell.h"
 
 /**
@@ -26,11 +39,11 @@ int main(int ac, char **av)
 				exit(126);
 			if (errno == ENOENT)
 			{
-				_eputs(av[0]);
-				_eputs(": 0: Can't open ");
-				_eputs(av[1]);
-				_eputchar('\n');
-				_eputchar(BUF_FLUSH);
+				error_puts(av[0]);
+				error_puts(": 0: Can't open ");
+				error_puts(av[1]);
+				error_putchar('\n');
+				error_putchar(BUF_FLUSH);
 				exit(127);
 			}
 			return (EXIT_FAILURE);
@@ -39,6 +52,6 @@ int main(int ac, char **av)
 	}
 	populate_env_list(info);
 	read_history(info);
-	hsh(info, av);
+	run_command(info, av);
 	return (EXIT_SUCCESS);
 }

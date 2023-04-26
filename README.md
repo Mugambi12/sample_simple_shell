@@ -256,7 +256,7 @@ Simple shell 0.2 +
 ### Task 8. Simple shell 0.4.1
 Simple shell 0.4 +
  - handle arguments for the built-in exit
- - Usage: exit status, where status is an integer used to exit the shell
+ - Usage: exit cmd_status, where cmd_status is an integer used to exit the shell
   ```
   julien@ubuntu:~/shell$ ./shell_0.4.1
   $ exit 98
@@ -269,7 +269,7 @@ Simple shell 0.4 +
 
 ### Task 9. setenv, unsetenv
 Simple shell 1.0 +
-Implement the `setenv` and `unsetenv` builtin commands
+Implement the `setenv` and `unsetenv` built_in commands
  - `setenv`
     - Initialize a new environment variable, or modify an existing one
     - Command syntax: setenv VARIABLE VALUE
@@ -283,7 +283,7 @@ Implement the `setenv` and `unsetenv` builtin commands
 
 ### Task 10. cd
 Simple shell 1.0 +
-Implement the builtin command cd:
+Implement the built_in command cd:
  - Changes the current directory of the process.
  - Command syntax: cd [DIRECTORY]
  - If no argument is given to cd the command must be interpreted like cd $HOME
@@ -360,7 +360,7 @@ Simple shell 1.0 +
 
 ### Task 13. alias
 Simple shell 1.0 +
- - Implement the alias builtin command
+ - Implement the alias built_in command
  - Usage: alias [name[='value'] ...]
     - alias: Prints a list of all aliases, one per line, in the form name='value'
     - alias name [name2 ...]: Prints the aliases name, name2, etc 1 per line, in the form name='value'

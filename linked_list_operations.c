@@ -1,3 +1,12 @@
+/**
+ * Introduction
+ *		add_node - Adds a new node to the start of the linked list.
+ *		add_node_end - adds a node to the end of the list.
+ *		delete_node_at_index - deletes a node at a specific index.
+ *		node_string_prefix_equal - finds the node whose string starts with a given prefix.
+ *		get_node_index - gets the index of a node in a linked list.
+ */
+
 #include "shell.h"
 
 /**
@@ -24,7 +33,7 @@ list_t *add_node(list_t **head, const char *str, int num)
 
 	if (str)
 	{
-		new_head->str = _strdup(str);
+		new_head->str = string_dupy(str);
 		if (!new_head->str)
 		{
 			free(new_head);
@@ -61,7 +70,7 @@ list_t *add_node_end(list_t **head, const char *str, int num)
 	new_node->num = num;
 	if (str)
 	{
-		new_node->str = _strdup(str);
+		new_node->str = string_dupy(str);
 		if (!new_node->str)
 		{
 			free(new_node);
@@ -79,25 +88,6 @@ list_t *add_node_end(list_t **head, const char *str, int num)
 		*head = new_node;
 	}
 	return (new_node);
-}
-
-/**
- * print_list_str - prints the string element of a linked list.
- * @h: pointer to first node.
- * Return: size of the linked list.
- */
-size_t print_list_str(const list_t *h)
-{
-	size_t i = 0;
-
-	while (h)
-	{
-		_puts(h->str ? h->str : "(nil)");
-		_puts("\n");
-		h = h->next;
-		i++;
-	}
-	return (i);
 }
 
 /**
@@ -142,25 +132,44 @@ int delete_node_at_index(list_t **head, unsigned int index)
 }
 
 /**
- * free_list - frees all nodes of a linked list.
- * @head_ptr: pointer to pointer to head node.
+ * node_string_prefix_equal - finds the node whose string starts with a given prefix.
+ * @node: pointer to the head of the list.
+ * @prefix: the prefix to match.
+ * @c: the next character after prefix to match, or -1 if not needed.
  *
- * Return: void
+ * Return: pointer to the matching node, or NULL if not found.
  */
-void free_list(list_t **head_ptr)
+list_t *node_string_prefix_equal(list_t *node, char *prefix, char c)
 {
-	list_t *node, *next_node, *head;
+	char *p = NULL;
 
-	if (!head_ptr || !*head_ptr)
-		return;
-	head = *head_ptr;
-	node = head;
 	while (node)
 	{
-		next_node = node->next;
-		free(node->str);
-		free(node);
-		node = next_node;
+		p = string_prefix_equal(node->str, prefix);
+		if (p && ((c == -1) || (*p == c)))
+			return (node);
+		node = node->next;
 	}
-	*head_ptr = NULL;
+	return (NULL);
+}
+
+/**
+ * get_node_index - gets the index of a node in a linked list.
+ * @head: pointer to the head of the linked list.
+ * @node: pointer to the node to find the index of.
+ *
+ * Return: the index of the node or -1 if it's not found.
+ */
+ssize_t get_node_index(list_t *head, list_t *node)
+{
+	size_t i = 0;
+
+	while (head)
+	{
+		if (head == node)
+			return (i);
+		head = head->next;
+		i++;
+	}
+	return (-1);
 }

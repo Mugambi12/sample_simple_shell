@@ -1,3 +1,12 @@
+/**
+ * Introduction: The order is based on the dependencies of the functions, where
+ *				get_history_file is called by write_history and read_history.
+ *				build_history_list and renumber_history are called by read_history.
+ *				Therefore, get_history_file should be called first, followed
+ *				by write_history and read_history, and then build_history_list
+ *				and renumber_history can be called as needed.
+*/
+
 #include "shell.h"
 
 /**
@@ -5,7 +14,7 @@
  * @info: pointer to the info struct.
  *
  * Return: pointer to allocated string containing history
- *          file path or NULL if error.
+ *				file path or NULL if error.
  */
 char *get_history_file(info_t *info)
 {
@@ -15,14 +24,14 @@ char *get_history_file(info_t *info)
 	if (!dir)
 		return (NULL);
 
-	buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
+	buf = malloc(sizeof(char) * (string_strlen(dir) + string_strlen(HIST_FILE) + 2));
 	if (!buf)
 		return (NULL);
 
 	buf[0] = 0;
-	_strcpy(buf, dir);
-	_strcat(buf, "/");
-	_strcat(buf, HIST_FILE);
+	string_cpy(buf, dir);
+	string_strcat(buf, "/");
+	string_strcat(buf, HIST_FILE);
 
 	return (buf);
 }
@@ -48,10 +57,10 @@ int write_history(info_t *info)
 		return (-1);
 	for (node = info->history; node; node = node->next)
 	{
-		_putsfd(node->str, fd);
-		_putfd('\n', fd);
+		error_putsfd(node->str, fd);
+		error_putfd('\n', fd);
 	}
-	_putfd(BUF_FLUSH, fd);
+	error_putfd(BUF_FLUSH, fd);
 	close(fd);
 	return (1);
 }
@@ -60,7 +69,7 @@ int write_history(info_t *info)
  * read_history - Reads command history from a file.
  * @info: Pointer to parameter struct.
  *
- * Return: Returns histcount on success, 0 otherwise.
+ * Return: Returns history_count on success, 0 otherwise.
  */
 int read_history(info_t *info)
 {
@@ -98,11 +107,11 @@ int read_history(info_t *info)
 	if (last != i)
 		build_history_list(info, buf + last, linecount++);
 	free(buf);
-	info->histcount = linecount;
-	while (info->histcount-- >= HIST_MAX)
+	info->history_count = linecount;
+	while (info->history_count-- >= HIST_MAX)
 		delete_node_at_index(&(info->history), 0);
 	renumber_history(info);
-	return (info->histcount);
+	return (info->history_count);
 }
 
 /**
@@ -142,5 +151,5 @@ int renumber_history(info_t *info)
 		node->num = i++;
 		node = node->next;
 	}
-	return (info->histcount = i);
+	return (info->history_count = i);
 }
